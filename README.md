@@ -1,6 +1,6 @@
 # Speak No Blocks
 
-A Minecraft plugin for destroying blocks if you speak their name
+A Minecraft plugin for destroying blocks by speaking their name
 
 It embeds a lightweight web server directly into the Minecraft server, listening for commands to destroy specific block types around players. It was primarily designed to work with a [local offline voice recognition client](./client) to allow players to destroy blocks simply by saying their names.
 
