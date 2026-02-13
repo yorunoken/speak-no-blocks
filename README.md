@@ -1,8 +1,8 @@
 # Speak No Blocks
 
-**Speak No Blocks** is a Spigot/Paper plugin that allows external applications to interact with the Minecraft world in real-time via HTTP.
+A Minecraft plugin for destroying blocks if you speak their name
 
-It embeds a lightweight web server directly into the Minecraft server, listening for commands to destroy specific block types around players. It was primarily designed to work with a [local offline voice recognition client](./client) to allow players to mine blocks simply by saying their names.
+It embeds a lightweight web server directly into the Minecraft server, listening for commands to destroy specific block types around players. It was primarily designed to work with a [local offline voice recognition client](./client) to allow players to destroy blocks simply by saying their names.
 
 ## Installation
 
