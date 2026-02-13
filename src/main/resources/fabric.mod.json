@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "speak-no-blocks",
+  "version": "${version}",
+  "name": "Speak No Blocks",
+  "description": "Voice controlled block breaking!",
+  "authors": [
+    "Yorunoken"
+  ],
+  "contact": {
+    "sources": "https://github.com/Yorunoken/speak-no-blocks"
+  },
+  "license": "MIT",
+  "icon": "assets/speak-no-blocks/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "com.yorunoken.speakNoBlocks.client.SpeakNoBlocksDataGenerator"
+    ],
+    "client": [
+      "com.yorunoken.speakNoBlocks.client.SpeakNoBlocksClient"
+    ],
+    "main": [
+      "com.yorunoken.speakNoBlocks.SpeakNoBlocks"
+    ],
+    "modmenu": [
+      "com.yorunoken.speakNoBlocks.client.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "speak-no-blocks.mixins.json",
+    {
+      "config": "speak-no-blocks.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
