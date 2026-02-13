@@ -1,18 +1,18 @@
 package com.yorunoken.speakNoBlocks;
 
-import com.sun.net.httpserver.HttpServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Objects;
 
 public final class SpeakNoBlocks extends JavaPlugin {
-    public HttpServer server;
-    public final int DEFAULT_PORT = 8080;
     public int radius;
     public final int DEFAULT_RADIUS = 16;
+    public boolean enabled = true;
 
     @Override
     public void onEnable() {
-        saveDefaultConfig(); // save config.yml
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, "speaknoblocks:voice_cmd", new VoicePacketHandler(this));
+
+        saveDefaultConfig();
         radius = getConfig().getInt("radius", DEFAULT_RADIUS);
 
         if (getCommand("speaknoblocks") != null) {
@@ -20,13 +20,13 @@ public final class SpeakNoBlocks extends JavaPlugin {
             Objects.requireNonNull(getCommand("speaknoblocks")).setExecutor(controller);
             Objects.requireNonNull(getCommand("speaknoblocks")).setTabCompleter(controller);
         }
+
+        getLogger().info("Speak No Blocks: Native Networking Ready!");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("Shutting down web server");
-        if (server != null) {
-            server.stop(0);
-        }
+        this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
+        getLogger().info("Speak No Blocks: Disabled.");
     }
 }
