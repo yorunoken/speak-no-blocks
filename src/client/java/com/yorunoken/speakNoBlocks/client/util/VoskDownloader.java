@@ -4,7 +4,7 @@ import net.minecraft.client.MinecraftClient;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
-import java.net.URL;
+import java.net.URI;
 import java.nio.file.*;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
@@ -34,7 +34,7 @@ public class VoskDownloader {
                 deletePath(tempExtractDir);
 
                 status = "Downloading Model...";
-                try (InputStream in = new URL(MODEL_URL).openStream()) {
+                try (InputStream in = URI.create(MODEL_URL).toURL().openStream()) {
                     Files.copy(in, tempZip, StandardCopyOption.REPLACE_EXISTING);
                 }
 
