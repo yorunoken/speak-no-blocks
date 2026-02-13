@@ -1,0 +1,18 @@
+name: SpeakNoBlocks
+version: '1.0'
+main: com.yorunoken.speakNoBlocks.SpeakNoBlocks
+api-version: '1.21'
+author: yorunoken
+
+commands:
+  speaknoblocks:
+    description: Control the state of Speak No Blocks
+    aliases: [snb]
+    usage: /<command>
+    permission: speaknoblocks.admin
+    permission-message: You do not have permission to use this command.
+
+permissions:
+  speaknoblocks.admin:
+    description: Allows control of the SpeakNoBlocks server
+    default: op
