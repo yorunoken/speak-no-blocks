@@ -1,6 +1,7 @@
 import json
 import sys
 import os
+import threading
 import pyaudio
 from vosk import Model, KaldiRecognizer
 import urllib.request
@@ -124,6 +125,20 @@ FLAG_WORDS = [
     {"word": ["concrete", "cement"], "blocks": ["minecraft:white_concrete", "minecraft:orange_concrete", "minecraft:magenta_concrete", "minecraft:light_blue_concrete", "minecraft:yellow_concrete", "minecraft:lime_concrete", "minecraft:pink_concrete", "minecraft:gray_concrete", "minecraft:light_gray_concrete", "minecraft:cyan_concrete", "minecraft:purple_concrete", "minecraft:blue_concrete", "minecraft:brown_concrete", "minecraft:green_concrete", "minecraft:red_concrete", "minecraft:black_concrete"]},
 ]
 
+def send_request_thread(url, data):
+    """Handles the actual blocking request in a separate thread."""
+    try:
+        req = urllib.request.Request(
+            url, 
+            data=data, 
+            headers={"Content-Type": "application/json"}
+        )
+        # This will no longer freeze the main listen_loop
+        with urllib.request.urlopen(req) as response:
+            print(f" -> Request success: {response.status}")
+    except Exception as e:
+        print(f" -> Request FAILED: {e}")
+
 def break_block(targeted_blocks):
     """Sends the HTTP request to the bot server."""
     print(f" -> SENDING: {targeted_blocks}...")
@@ -134,16 +149,9 @@ def break_block(targeted_blocks):
     
     print(f" -> Sending command to {url} for user {USERNAME}...")
     
-    try:
-        req = urllib.request.Request(
-            url, 
-            data=json_data, 
-            headers={"Content-Type": "application/json"}
-        )
-        urllib.request.urlopen(req)
-        print(" -> Request success.")
-    except Exception as e:
-        print(f" -> Request FAILED: {e}")
+    t = threading.Thread(target=send_request_thread, args=(url, json_data, USERNAME))
+    t.daemon = True
+    t.start()
 
 def listen_loop():
     if not os.path.exists("model"):
