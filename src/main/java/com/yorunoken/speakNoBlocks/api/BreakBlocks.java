@@ -59,23 +59,9 @@ public class BreakBlocks implements HttpHandler {
 
         plugin.getLogger().info("Parsed user: " + userInitiated);
 
-        Bukkit.getScheduler().runTask(plugin, () -> {
-            // get all online players, and loop through them to break their blocks
-            Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-
-            for (Player player : players) {
-                // commence block breaking for each player
-                breakBlocks(player, targetBlocks);
-            }
-        });
-
-        sendResponse(exchange, 200, "{\"status\": \"success\"}");
-    }
-
-    private void breakBlocks(Player player, JsonArray blocksArray) {
         Set<Material> targets = new HashSet<>();
 
-        for (JsonElement element : blocksArray) {
+        for (JsonElement element : targetBlocks) {
             String blockName = element.getAsString();
             Material mat = Material.matchMaterial(blockName);
 
@@ -86,6 +72,20 @@ public class BreakBlocks implements HttpHandler {
             plugin.getLogger().info("Invalid block name: (check API)" + blockName);
         }
 
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            // get all online players, and loop through them to break their blocks
+            Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+
+            for (Player player : players) {
+                // commence block breaking for each player
+                breakBlocks(player, targets);
+            }
+        });
+
+        sendResponse(exchange, 200, "{\"status\": \"success\"}");
+    }
+
+    private void breakBlocks(Player player, Set<Material> targets) {
         Location location = player.getLocation();
 
         int r = plugin.radius;
