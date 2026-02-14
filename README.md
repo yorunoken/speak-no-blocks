@@ -41,10 +41,14 @@ The config file is located at `config/speak-no-blocks.json`.
 
 ```json
 {
-  "radius": 16
+  "radius": 16,
+  "voiceCommands": [...]
 }
 
 ```
+
+`radius` is used to determine how far away blocks will break from players.
+`voiceCommands` is used to determine what blocks will break when players say what word.
 
 ## Usage
 
