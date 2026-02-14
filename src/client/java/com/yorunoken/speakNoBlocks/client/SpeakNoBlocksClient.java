@@ -1,5 +1,6 @@
 package com.yorunoken.speakNoBlocks.client;
 
+import com.yorunoken.speakNoBlocks.config.ModConfig;
 import net.fabricmc.api.ClientModInitializer;
 import com.yorunoken.speakNoBlocks.client.util.VoskHandler;
 

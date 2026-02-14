@@ -2,6 +2,7 @@ package com.yorunoken.speakNoBlocks.client.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.yorunoken.speakNoBlocks.config.ModConfig;
 import com.yorunoken.speakNoBlocks.network.VoicePacketPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -16,6 +17,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.TargetDataLine;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class VoskHandler {
@@ -119,15 +121,15 @@ public class VoskHandler {
 
             if (text.isEmpty()) return;
 
-            final String finalText = text;
+            Map<String, List<String>> commands = ModConfig.get().getCommandMap();
 
-            Optional<String> match = VoiceDefinitions.COMMANDS.keySet().stream()
-                    .filter(finalText::contains)
+            Optional<String> match = commands.keySet().stream()
+                    .filter(text::contains)
                     .max(Comparator.comparingInt(String::length));
 
             if (match.isPresent()) {
                 String keyword = match.get();
-                List<String> blocks = VoiceDefinitions.COMMANDS.get(keyword);
+                List<String> blocks = commands.get(keyword);
                 System.out.println("Matched: " + keyword);
                 System.out.println("Blocks to destroy: " + blocks);
 

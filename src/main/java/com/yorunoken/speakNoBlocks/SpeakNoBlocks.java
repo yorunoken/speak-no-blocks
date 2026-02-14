@@ -25,11 +25,12 @@ public class SpeakNoBlocks implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        // load config
+        ModConfig.load();
+
         // register the bridge
         PayloadTypeRegistry.playC2S().register(VoicePacketPayload.ID, VoicePacketPayload.CODEC);
 
-        // load config
-        ModConfig.load();
 
         ServerPlayNetworking.registerGlobalReceiver(VoicePacketPayload.ID, ((payload, context) -> {
             MinecraftServer server = context.server();
