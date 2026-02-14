@@ -14,7 +14,7 @@ Grab the latest `.jar` from [Releases](https://github.com/yorunoken/speak-no-blo
 
 ### Requirements
 
-I coded this to work for 1.21 because I have no idea how to do versioning
+I coded this to work for 1.21.2 because I have no idea how to do versioning
 
 You just need `Fabric API` and `Mod Menu` as dependencies (mod menu is for downloading the local AI model)
 

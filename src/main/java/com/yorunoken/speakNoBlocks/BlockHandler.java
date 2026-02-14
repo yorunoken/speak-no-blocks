@@ -37,8 +37,6 @@ public class BlockHandler {
             int minZ = playerPos.getZ() - r;
             int maxZ = playerPos.getZ() + r;
 
-            int blocksBrokenForPlayer = 0;
-
             BlockPos.Mutable pos = new BlockPos.Mutable();
             for (int x = minX; x <= maxX; x++) {
                 for (int z = minZ; z <= maxZ; z++) {
@@ -50,17 +48,9 @@ public class BlockHandler {
                         if (targetBlocks.contains(state.getBlock())) {
                             // world.addBlockBreakParticles(pos, state);
                             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
-
-                            blocksBrokenForPlayer++;
                         }
                     }
                 }
-            }
-
-            if (blocksBrokenForPlayer > 0) {
-                world.playSound(null, player.getX(), player.getY(), player.getZ(),
-                        SoundEvents.ENTITY_CHICKEN_EGG,
-                        SoundCategory.PLAYERS, 1.0f, 1.0f);
             }
         }
     }
