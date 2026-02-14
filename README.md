@@ -41,12 +41,7 @@ The config file is located at `config/speak-no-blocks.json`.
 
 ```json
 {
-  "radius": 5,
-  "breakBedrock": false,
-  "blacklist": [
-    "minecraft:air",
-    "minecraft:barrier"
-  ]
+  "radius": 16
 }
 
 ```
