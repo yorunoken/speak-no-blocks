@@ -10,7 +10,7 @@ Enjoy! =)
 
 ## Installation
 
-Grab the latest `.jar` from [Releases](https://github.com/yorunoken/speak-no-blocks/releases/tag/v1.0) or [Modrinth](https://google.com).
+Grab the latest `.jar` from [Releases](https://github.com/yorunoken/speak-no-blocks/releases/tag/v1.0) or [Modrinth](https://modrinth.com/mod/speak-no-blocks).
 
 ### Requirements
 
