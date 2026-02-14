@@ -1,15 +1,22 @@
 # Speak No Blocks
 
-A Fabric mod that allows players to destroy specific blocks using their voice!
+This is a Fabric mod I cooked up in a span of a few days
+
+I originally saw this concept on a few YouTube videos, but none of them had any way to install them, so I made this!
+
+It uses a local offline AI model to process your voice, so no data leaves your computer. It’s fast, private, and works even if your internet dies (unless you were connected to a server).
+
+Enjoy! =)
 
 ## Installation
 
+Grab the latest `.jar` from [Releases](https://github.com/yorunoken/speak-no-blocks/releases/tag/v1.0) or [Modrinth](https://google.com).
+
 ### Requirements
-- **Minecraft**: 1.21
-- **Loader**: Fabric Loader
-- **Dependencies**: 
-    - Fabric API
-    - **Mod Menu** (Required to access the model downloader)
+
+I coded this to work for 1.21, so 1.21.x should support it
+
+You just need `Fabric API` and `Mod Menu` as dependencies (mod menu is for downloading the local AI model)
 
 ### Setup Guide
 This mod must be installed on **both the Client and the Server**.

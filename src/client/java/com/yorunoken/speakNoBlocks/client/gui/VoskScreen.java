@@ -60,7 +60,6 @@ public class VoskScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
 
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 20, 0xFFFFFF);
@@ -72,16 +71,6 @@ public class VoskScreen extends Screen {
         String dlStatus = VoskDownloader.status;
         int dlColor = dlStatus.startsWith("Done") ? 0x55FF55 : (dlStatus.startsWith("Error") ? 0xFF5555 : 0xFFFFFF);
         context.drawCenteredTextWithShadow(this.textRenderer, Text.of("Model Status: " + dlStatus), this.width / 2, this.downloadBtn.getY() - 15, dlColor);
-
-        if (toggleBtn != null) {
-            boolean active = SpeakNoBlocksClient.speechHandler.isActive();
-            toggleBtn.setMessage(Text.of(active ? "Stop Voice Recognition" : "Start Voice Recognition"));
-            toggleBtn.active = !VoskDownloader.isDownloading;
-        }
-
-        if (downloadBtn != null) {
-            downloadBtn.active = !VoskDownloader.isDownloading;
-        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -31,7 +32,7 @@ public class BlockHandler {
         int maxY = 319;
 
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            World world = player.getServerWorld();
+            ServerWorld world = player.getServerWorld();
             BlockPos playerPos = player.getBlockPos();
 
             int minX = playerPos.getX() - r;
