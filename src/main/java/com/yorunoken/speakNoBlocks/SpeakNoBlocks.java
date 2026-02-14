@@ -36,7 +36,7 @@ public class SpeakNoBlocks implements ModInitializer {
             MinecraftServer server = context.server();
 
             server.execute(() -> {
-                List<Block> targetBlocks = new ArrayList<>();
+                Set<Block> targetBlocks = new HashSet<>();
 
                 System.out.println("Received block IDs from " + context.player().getName().getString());
                 for (String blockId : payload.blockIds()) {

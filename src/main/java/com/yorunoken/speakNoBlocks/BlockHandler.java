@@ -14,12 +14,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Set;
 
 public class BlockHandler {
     private final MinecraftServer server;
-    private final List<Block> targetBlocks;
+    private final Set<Block> targetBlocks;
 
-    public BlockHandler(MinecraftServer server, List<Block> targetBlocks) {
+    public BlockHandler(MinecraftServer server, Set<Block> targetBlocks) {
         this.server = server;
         this.targetBlocks = targetBlocks;
     }
