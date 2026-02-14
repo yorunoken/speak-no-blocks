@@ -5,6 +5,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.*;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
@@ -16,10 +18,12 @@ public class VoskDownloader {
 
     public static String status = "Ready";
     public static boolean isDownloading = false;
+    public static float progress = 0.0f;
 
     public static void startDownload(Runnable onComplete) {
         if (isDownloading) return;
         isDownloading = true;
+        progress = 0.0f;
 
         new Thread(() -> {
             try {
@@ -33,12 +37,32 @@ public class VoskDownloader {
                 deletePath(tempZip);
                 deletePath(tempExtractDir);
 
-                status = "Downloading Model...";
-                try (InputStream in = URI.create(MODEL_URL).toURL().openStream()) {
-                    Files.copy(in, tempZip, StandardCopyOption.REPLACE_EXISTING);
+                status = "Starting Download...";
+
+                URL url = URI.create(MODEL_URL).toURL();
+                URLConnection connection = url.openConnection();
+                long fileSize = connection.getContentLengthLong();
+
+                try (BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
+                     FileOutputStream out = new FileOutputStream(tempZip.toFile())) {
+
+                    byte[] dataBuffer = new byte[8192]; // 8KB buffer
+                    int bytesRead;
+                    long totalRead = 0;
+
+                    while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                        out.write(dataBuffer, 0, bytesRead);
+                        totalRead += bytesRead;
+
+                        if (fileSize > 0) {
+                            progress = (float) totalRead / fileSize;
+                            int percent = (int) (progress * 100);
+                            status = "Downloading: " + percent + "%";
+                        }
+                    }
                 }
 
-                status = "Unzipping...";
+                status = "Unzipping (this may take a moment)...";
                 unzip(tempZip, tempExtractDir);
 
                 Path modelRoot = findModelRoot(tempExtractDir);
@@ -48,19 +72,22 @@ public class VoskDownloader {
                 }
 
                 status = "Installing...";
+                if (!Files.exists(finalDest.getParent())) Files.createDirectories(finalDest.getParent());
                 Files.move(modelRoot, finalDest, StandardCopyOption.ATOMIC_MOVE);
 
                 deletePath(tempZip);
                 deletePath(tempExtractDir);
 
-                status = "Done! Restart the model";
+                status = "Done! Start the model";
                 isDownloading = false;
+                progress = 1.0f;
                 onComplete.run();
 
             } catch (Exception e) {
                 e.printStackTrace();
                 status = "Error: " + e.getMessage();
                 isDownloading = false;
+                progress = 0.0f;
             }
         }).start();
     }

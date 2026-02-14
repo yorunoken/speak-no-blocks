@@ -1,20 +1,20 @@
 package com.yorunoken.speakNoBlocks.client.gui;
 
 import com.yorunoken.speakNoBlocks.client.SpeakNoBlocksClient;
-import com.yorunoken.speakNoBlocks.client.util.VoskHandler;
 import com.yorunoken.speakNoBlocks.client.util.VoskDownloader;
+import com.yorunoken.speakNoBlocks.client.util.VoskHandler;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
-public class VoskScreen extends Screen {
+public class SettingsScreen extends Screen {
 
     private final Screen parent;
     private ButtonWidget downloadBtn;
     private ButtonWidget toggleBtn;
 
-    public VoskScreen(Screen parent) {
+    public SettingsScreen(Screen parent) {
         super(Text.of("Speak No Blocks Configuration"));
         this.parent = parent;
     }
@@ -33,6 +33,7 @@ public class VoskScreen extends Screen {
                     } else {
                         handler.start();
                     }
+                    this.updateButtons();
                 })
                 .dimensions(centerX, startY, buttonWidth, buttonHeight)
                 .build();
@@ -43,9 +44,14 @@ public class VoskScreen extends Screen {
                     if (SpeakNoBlocksClient.speechHandler.isActive()) {
                         SpeakNoBlocksClient.speechHandler.stop();
                     }
+                    this.updateButtons();
+
                     VoskDownloader.startDownload(() -> {
                         if (this.client != null) {
-                            this.client.execute(() -> button.active = true);
+                            this.client.execute(() -> {
+                                button.active = true;
+                                this.updateButtons();
+                            });
                         }
                     });
                 })
@@ -56,25 +62,53 @@ public class VoskScreen extends Screen {
         this.addDrawableChild(ButtonWidget.builder(Text.of("Done"), button -> this.close())
                 .dimensions(centerX, this.height - 40, buttonWidth, buttonHeight)
                 .build());
+
+        this.updateButtons();
+    }
+
+    private void updateButtons() {
+        boolean voiceActive = SpeakNoBlocksClient.speechHandler.isActive();
+        if (this.toggleBtn != null) {
+            this.toggleBtn.setMessage(voiceActive ? Text.of("Stop Voice") : Text.of("Start Voice"));
+        }
+
+        if (this.downloadBtn != null) {
+            if (VoskDownloader.isDownloading) {
+                this.downloadBtn.active = false;
+                this.downloadBtn.setMessage(Text.of("Downloading..."));
+            } else {
+                if (!this.downloadBtn.active) {
+                    this.downloadBtn.active = true;
+                    this.downloadBtn.setMessage(Text.of("Download Model (1.8G)"));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void tick() {
+        this.updateButtons();
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
-        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 20, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 20, 0xFFFFFFFF);
 
         String voiceStatus = VoskHandler.status;
-        int voiceColor = voiceStatus.equals("Listening") ? 0x55FF55 : (voiceStatus.startsWith("Error") ? 0xFF5555 : 0xAAAAAA);
+        int voiceColor = voiceStatus.equals("Listening") ? 0xFF55FF55 : (voiceStatus.startsWith("Error") ? 0xFFFF5555 : 0xFFAAAAAA);
         context.drawCenteredTextWithShadow(this.textRenderer, Text.of("Voice Status: " + voiceStatus), this.width / 2, this.toggleBtn.getY() - 15, voiceColor);
 
         String dlStatus = VoskDownloader.status;
-        int dlColor = dlStatus.startsWith("Done") ? 0x55FF55 : (dlStatus.startsWith("Error") ? 0xFF5555 : 0xFFFFFF);
+        int dlColor = dlStatus.startsWith("Done") ? 0xFF55FF55 : (dlStatus.startsWith("Error") ? 0xFFFF5555 : 0xFFFFFFFF);
         context.drawCenteredTextWithShadow(this.textRenderer, Text.of("Model Status: " + dlStatus), this.width / 2, this.downloadBtn.getY() - 15, dlColor);
     }
 
     @Override
     public void close() {
-        this.client.setScreen(this.parent);
+        if (this.client != null) {
+            this.client.setScreen(this.parent);
+        }
     }
 }
