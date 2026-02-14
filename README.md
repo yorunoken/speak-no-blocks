@@ -50,7 +50,7 @@ The config file is located at `config/speak-no-blocks.json`.
 
 1. Ensure your microphone is set as the default input device in your OS.
 2. Join the server.
-3. Speak the name of a block clearly (e.g., "Oak Log").
+3. Speak the name of a block ("wood" destroys all types of wood for example).
 4. Valid blocks within the radius will be destroyed.
 
 ## Developer Info
